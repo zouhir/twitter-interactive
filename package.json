@@ -4,8 +4,18 @@
   "description": "Zouhir's Interactive Media Assignment",
   "main": "index.js",
   "scripts": {
+    "server": "nodemon ./server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^1.12.1"
+  },
+  "dependencies": {
+    "express": "^4.15.4",
+    "socket.io": "^2.0.3",
+    "sockjs": "^0.3.18",
+    "twit": "^2.2.9"
+  }
 }
