@@ -1,46 +1,39 @@
 const express = require('express')
-
-const Twit = require('twit');
-
-const keys = require('./keys.json');
-
+const bodyParser = require('body-parser');
+const _twitterIO = require('./twitter-io');
+const socket = require('socket.io');
+const http = require('http');
+/**
+ * express app
+ */
 const app = express();
 
-const server = require('http').Server(app);
-var io = require('socket.io')(server);
+/**
+ * Socket.io server
+ */
+const server = http.createServer(app);
+let io = socket(server);
 
-function stream(keywords1, keywords2) {
-    const twitter = new Twit({
-        consumer_key: keys.consumer_key,
-        consumer_secret: keys.consumer_secret,
-        access_token: keys.access_token,
-        access_token_secret: keys.access_token_secret
-    });
-    var keywords = [].concat(keywords1, keywords2);
+/**
+ * Middleware
+ */
 
-    var stream = twitter.stream('statuses/filter', { track: keywords })
+app.use(bodyParser.urlencoded({ extended: false }))
 
-    stream.on('tweet', function (tweet) {
-        console.log(tweet)
-    })
-
-}
-
-
+let twitterIO = null;
 
 io.on('connection', function (socket) {
-    socket.emit('news', { hello: 'world' });
-    socket.on('my other event', function (data) {
-        console.log(data);
-    });
+    twitterIO = _twitterIO(socket);
+
+    twitterIO.listen(['iphone'], ['android'])
+
 });
 
 app.get('/', function (req, res) {
-    res.send('Hello World!')
-})
+    res.sendFile(__dirname + '/index.html');
+});
 
-app.listen(3000, function () {
+
+server.listen(3000, function () {
     console.log('Example app listening on port 3000!')
 })
-
-stream([1, 2], [3, 45]);

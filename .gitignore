@@ -62,3 +62,6 @@ typings/
 .idea/
 
 server/keys.json
+
+
+.DS_*

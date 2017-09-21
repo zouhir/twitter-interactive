@@ -13,7 +13,9 @@
     "nodemon": "^1.12.1"
   },
   "dependencies": {
+    "body-parser": "^1.18.1",
     "express": "^4.15.4",
+    "node-geocoder": "^3.20.0",
     "socket.io": "^2.0.3",
     "sockjs": "^0.3.18",
     "twit": "^2.2.9"

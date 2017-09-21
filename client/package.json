@@ -1,0 +1,76 @@
+{
+  "name": "widgets-template",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "lint": "eslint src",
+    "start": "if-env NODE_ENV=production && npm run -s serve || npm run -s dev",
+    "build": "preact build",
+    "serve": "preact build && preact serve",
+    "dev": "MapboxAccessToken=pk.eyJ1Ijoiem91aGlyYyIsImEiOiJjajdueGNsdTMxbTl2MzN0NnRrYnB1a3lxIn0.6eUCJKabghRZDQa5EuZRAw preact watch --template src/index.ejs"
+  },
+  "eslintConfig": {
+    "extends": [
+      "eslint-config-standard",
+      "eslint-config-standard-preact"
+    ]
+  },
+  "eslintIgnore": [
+    "build/*"
+  ],
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-jest": "^21.0.2",
+    "eslint": "^4.5.0",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-config-standard-preact": "^1.1.6",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-node": "^5.1.1",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "if-env": "^1.0.0",
+    "jest": "^21.0.2",
+    "node-sass": "^4.5.3",
+    "preact-cli": "^1.4.1",
+    "preact-render-to-string": "^3.6.3",
+    "sass-loader": "^6.0.6"
+  },
+  "dependencies": {
+    "d3-array": "^1.2.0",
+    "d3-request": "^1.0.6",
+    "d3-scale": "^1.0.6",
+    "immutable": "^3.8.1",
+    "preact": "^8.2.5",
+    "preact-compat": "^3.17.0",
+    "preact-habitat": "^3.0.2",
+    "preact-router": "^2.5.7",
+    "react-map-gl": "^3.0.4"
+  },
+  "jest": {
+    "verbose": true,
+    "transform": {
+      "^.+\\.js$": "babel-jest"
+    },
+    "globals": {
+      "NODE_ENV": "test"
+    },
+    "moduleFileExtensions": [
+      "js",
+      "jsx"
+    ],
+    "moduleNameMapper": {
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
+      "\\.(css|less)$": "identity-obj-proxy",
+      "^react$": "preact-compat",
+      "^react-dom$": "preact-compat"
+    },
+    "moduleDirectories": [
+      "node_modules",
+      "src"
+    ]
+  }
+}
