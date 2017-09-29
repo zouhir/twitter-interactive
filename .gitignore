@@ -65,3 +65,5 @@ server/keys.json
 
 
 .DS_*
+
+keys.*

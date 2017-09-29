@@ -1,0 +1,46 @@
+.list {
+  width: 20%;
+  position: fixed;
+  left: 0;
+  top:0;
+  bottom: 0;
+  height: 100%;
+  background: #FFF;
+  box-shadow: 3px 1px 6px 0 rgba(145,145,145,0.40);
+  padding: 10px;
+  overflow: scroll;
+}
+
+.card {
+  width: 100%;
+  box-sizing: border-box;
+  &.one {
+    border-left: 4px solid #F6D53A;
+    span {
+      background: #F6D53A;
+    }
+  }
+  &.two {
+    border-left: 4px solid #69499B;
+    span {
+      background: #69499B;
+    }
+  }
+  margin-bottom: 10px;
+  box-shadow: 0 1px 4px 0 rgba(0,0,0,0.3);
+  color: #2f2f2f;
+  padding: 20px 15px;
+  h5, h6 {
+    padding: 0;
+    display: inline-block;
+    margin: 0;
+    margin-bottom: 10px;
+  }
+  h6 {
+    margin-left: 7px;
+  }
+  .tweetBody {
+    display: block;
+    width: 100%;
+  }
+}
