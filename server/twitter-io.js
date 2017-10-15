@@ -49,16 +49,37 @@ function compose(tweet) {
 
 /**
  * This function is responsible for listing to Twitter and emitting events to the browser
- * @param socket
  * @returns {{listen: (function(*=, *=))}}
  */
-module.exports = function (socket) {
-    const listen  = (keywords1, keywords2) => {
-        let keywords = [].concat(keywords1, keywords2);
-        let stream = twitter.stream('statuses/filter', { track: keywords })
+module.exports = function () {
+    let streaming = false;
+    let stream;
+    let keywords = []
+    const listen  = (pKeywords) => {
+
+        console.log(`🍕 listening toooooooo ${keywords1} and ${keywords2}`);
+        keywords = pKeywords;
+        stream = twitter.stream('statuses/filter', { track: pKeywords })
         stream.on('tweet', function (tweet) {
+
             socket.emit('tweet', compose(tweet))
-        })
+            streaming = true;
+        });
+        stream.on('disconnect', function (disconn) {
+            console.log('disconnect')
+        });
+        stream.on('connect', function (conn) {
+            console.log('connecting')
+        });
+        stream.on('reconnect', function (reconn, res, interval) {
+        console.log('reconnecting. statusCode:', res.statusCode)
+        });
+    };
+    const stopStream = () => {
+        if(stream) {
+            console.log('STOOOOOOOOOOOOOOP');
+            stream.stop();
+        }
     }
-    return { listen: listen }
+    return { listen,  stopStream, streaming, keywords }
 }

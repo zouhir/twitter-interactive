@@ -1,0 +1,7 @@
+{
+  "files": [
+    "client",
+    "server",
+    "/server/keys.json"
+  ]
+}
