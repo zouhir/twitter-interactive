@@ -21,7 +21,12 @@ class Page extends Component {
     tweets: []
   }
   componentDidMount() {
+    let audio = new Audio('/session.mp3');
+    audio.play();
+
+    let message = new Audio('/message.mp3');
     socket.on('tweet', (response) => {
+      message.play();
       let tweets = this.state.tweets
       tweets.push(response)
       console.log(response);

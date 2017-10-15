@@ -5,15 +5,15 @@
   top:0;
   bottom: 0;
   height: 100%;
-  background: #FFF;
-  box-shadow: 3px 1px 6px 0 rgba(145,145,145,0.40);
   padding: 10px;
-  overflow: scroll;
+  overflow: hidden;
 }
 
 .card {
   width: 100%;
   box-sizing: border-box;
+  margin-bottom: 20px;
+  background: #FFF;
   &.one {
     border-left: 4px solid #F6D53A;
     span {

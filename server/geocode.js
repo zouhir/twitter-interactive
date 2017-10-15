@@ -20,6 +20,4 @@ const options = {
 
 const geocoder = nodeGeocoder(options);
 
-module.exports = function(address) {
-    return geocoder.geocode(address)
-}
+module.exports = geocoder

@@ -16,6 +16,9 @@ const session = require('express-session')
 const server = http.createServer(app);
 let io = socket(server);
 let twitterIO = _twitterIO();
+let stream = null;
+let keywords = [];
+let clientSocket = null;
 
 /**
  * Middleware
@@ -33,16 +36,33 @@ app.get('/', function (req, res) {
      * because we can't afford to open multiple twitter streams
      * on our free plan.
      */
-    let keywords = [];
     if(req.query.keywords) {
         keywords = req.query.keywords.split(',')
     }
+    if(keywords.length === 2) {
+        console.log('initialising stream')
+        /**
+         * Real time web socket connection with the browser
+         */
+        twitterIO.stopStream();
+        stream = twitterIO.listen(keywords)
+        stream.on('tweet', function (tweet) {
+            console.log('tweet');
+            if(clientSocket) {
+                clientSocket.emit('tweet', twitterIO.composer(tweet, keywords))
+            }
+        });
+        stream.on('disconnect', function (disconn) {
+            console.log('disconnect')
+        });
+        stream.on('connect', function (conn) {
+            console.log('connecting')
+        });
+        stream.on('reconnect', function (reconn, res, interval) {
+            console.log('reconnecting. statusCode:', res.statusCode)
+        });
+    }
 
-    /**
-     * Real time web socket connection with the browser
-     */
-    twitterIO.stopStream();
-    twitterIO.listen(keywords)
 
     res.sendFile(path.resolve(__dirname + '/../client/build/index.html'));
 });
@@ -50,9 +70,11 @@ app.get('/', function (req, res) {
 app.use('/', express.static(path.resolve(__dirname + '/../client/build/')));
 app.use('/resources', express.static(path.resolve(__dirname + '/../client/resources/')));
 
-io.on('connection', function (socket) {
-    socket.on('disconnect', function () {
-        twitterIO.stopStream();
+io.on('connection', function (_s) {
+    clientSocket = _s;
+    console.log('connected.......');
+    _s.on('disconnect', function () {
+        // twitterIO.stopStream();
         io.emit('user disconnected');
     });
 });
