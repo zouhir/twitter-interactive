@@ -20,6 +20,7 @@ let stream = null;
 let keywords = [];
 let clientSocket = null;
 
+
 /**
  * Middleware
  */
@@ -44,13 +45,21 @@ app.get('/', function (req, res) {
         /**
          * Real time web socket connection with the browser
          */
-        twitterIO.stopStream();
-        stream = twitterIO.listen(keywords)
+        if(stream === null) {
+            stream = twitterIO.listen(keywords)
+        }
+        let lastTweet = new Date().getTime();
         stream.on('tweet', function (tweet) {
-            console.log('tweet');
-            if(clientSocket) {
-                clientSocket.emit('tweet', twitterIO.composer(tweet, keywords))
-            }
+            let tweetTime = new Date().getTime();
+            if(( tweetTime - lastTweet > 1000) && clientSocket) {
+                console.log('tweet');
+                twitterIO.composer(tweet, keywords).then((res, rej) => {
+                    if(res) {
+                        clientSocket.emit('tweet', res)
+                        lastTweet = tweetTime;
+                    }
+                })
+            }   
         });
         stream.on('disconnect', function (disconn) {
             console.log('disconnect')
@@ -72,11 +81,6 @@ app.use('/resources', express.static(path.resolve(__dirname + '/../client/resour
 
 io.on('connection', function (_s) {
     clientSocket = _s;
-    console.log('connected.......');
-    _s.on('disconnect', function () {
-        // twitterIO.stopStream();
-        io.emit('user disconnected');
-    });
 });
 
 

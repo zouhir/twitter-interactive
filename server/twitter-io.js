@@ -59,14 +59,28 @@ module.exports = function () {
         if(tweet.text.indexOf(keywords[1]) > -1) {
             type = 'two';
         }
-        return {
-            name: tweet.user.name,
-            user: `@${tweet.user.screen_name}`,
-            text: tweet.text,
-            coordinates: { latitude: faker.address.latitude(), longitude: faker.address.longitude() },
-            location: faker.address.country(),
-            type: type
-        }
+        let city = faker.address.city();
+        let geocode = geocoder.geocode(city);
+        return new Promise((resolve, reject) => {
+            return geocode.then((res, err) => {
+                if(res) {
+                    return resolve({
+                        name: tweet.user.name,
+                        user: `@${tweet.user.screen_name}`,
+                        text: tweet.text,
+                        coordinates: { latitude: res[0].latitude, longitude: res[0].longitude },
+                        location: city,
+                        type: type
+                    })
+                } else {
+                    return reject(null)
+                }
+            }).catch(err => {
+                return reject(err)
+            }) 
+        })
+        
+        
     };
 
     return { listen,  stopStream, keywords, composer }
